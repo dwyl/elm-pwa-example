@@ -1,6 +1,6 @@
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open('airhorner').then(function (cache) {
+    caches.open('dwylapp').then(function (cache) {
       return cache.addAll([
         '/elm-pwa-example/manifest.json',
         '/elm-pwa-example/elm.js',
