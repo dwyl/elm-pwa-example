@@ -4,7 +4,11 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onInput, onClick)
 import Url
+import Http
+import Json.Decode as JD
+import Json.Encode as JE
 
 
 
@@ -30,12 +34,14 @@ main =
 type alias Model =
     { key : Nav.Key
     , url : Url.Url
+    , capture : String
+    , message : String
     }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url, Cmd.none )
+    ( Model key url "" "", Cmd.none )
 
 
 
@@ -45,6 +51,9 @@ init flags url key =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
+    | Capture String
+    | CreateCapture
+    | SaveCaptureResult (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,6 +72,18 @@ update msg model =
             , Cmd.none
             )
 
+        Capture text ->
+            ( { model | capture = text }, Cmd.none )
+
+        CreateCapture ->
+            ( model, saveCapture model.capture )
+
+        SaveCaptureResult (Ok response) ->
+            ( { model | capture = "", message = "Capture saved" }, Cmd.none )
+
+        SaveCaptureResult (Err e) ->
+            ( { model | message = "The capture couldn't be saved" }, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -79,21 +100,33 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "URL Interceptor"
+    { title = "DWYL App"
     , body =
-        [ text "The current URL is: "
-        , b [] [ text (Url.toString model.url) ]
-        , ul []
-            [ viewLink "/home"
-            , viewLink "/profile"
-            , viewLink "/reviews/the-century-of-the-self"
-            , viewLink "/reviews/public-opinion"
-            , viewLink "/reviews/shah-of-shahs"
-            ]
+        [ text model.message
+        , textarea [ onInput Capture, value model.capture ] []
+        , button [ class "db", onClick CreateCapture ] [ text "Save capture" ]
         ]
     }
 
 
-viewLink : String -> Html msg
-viewLink path =
-    li [] [ a [ href path ] [ text path ] ]
+
+-- Capture
+
+
+saveCapture : String -> Cmd Msg
+saveCapture capture =
+    Http.post
+        { url = "https://dwylapp.herokuapp.com/api/captures/create"
+        , body = Http.jsonBody (captureEncode capture)
+        , expect = Http.expectJson SaveCaptureResult captureDecoder
+        }
+
+
+captureEncode : String -> JE.Value
+captureEncode capture =
+    JE.object [ ( "text", JE.string capture ) ]
+
+
+captureDecoder : JD.Decoder String
+captureDecoder =
+    JD.field "text" JD.string
