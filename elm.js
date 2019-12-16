@@ -6171,7 +6171,7 @@ var $author$project$Main$saveCapture = function (capture) {
 			body: $elm$http$Http$jsonBody(
 				$author$project$Main$captureEncode(capture)),
 			expect: A2($elm$http$Http$expectJson, $author$project$Main$SaveCaptureResult, $author$project$Main$captureDecoder),
-			url: 'http://localhost:4000/api/captures/create'
+			url: 'https://dwylapp.herokuapp.com/api/captures/create'
 		});
 };
 var $elm$url$Url$addPort = F2(
