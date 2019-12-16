@@ -116,7 +116,7 @@ view model =
 saveCapture : String -> Cmd Msg
 saveCapture capture =
     Http.post
-        { url = "https://dwylapp.herokuapp.com/api/captures/create"
+        { url = "http://localhost:4000/api/captures/create"
         , body = Http.jsonBody (captureEncode capture)
         , expect = Http.expectJson SaveCaptureResult captureDecoder
         }
