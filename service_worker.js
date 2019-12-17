@@ -2,11 +2,11 @@ self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open('dwylapp').then(function (cache) {
       return cache.addAll([
-        '/manifest.json',
-        '/elm.js',
-        '/assets/images/dwyl.png',
-        '/assets/css/tachyons.css',
-        '/assets/css/app.css',
+        '/elm-pwa-example/manifest.json',
+        '/elm-pwa-example/elm.js',
+        '/elm-pwa-example/assets/images/dwyl.png',
+        '/elm-pwa-example/assets/css/tachyons.css',
+        '/elm-pwa-example/assets/css/app.css',
       ]);
     })
   );

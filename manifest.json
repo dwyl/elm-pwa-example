@@ -4,7 +4,7 @@
     "decription": "The dwyl application",
     "icons": [
       {
-        "src": "assets/images/dwyl.png",
+        "src": "/elm-pwa-example/assets/images/dwyl.png",
         "sizes": "192x192",
         "type": "image/png"
       }
