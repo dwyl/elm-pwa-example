@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <title>Dwyl App</title>
+        <link rel="canonical" href="https://dwyl.github.io/elm-pwa-example/" /> 
         <link rel="stylesheet" href="/elm-pwa-example/assets/css/tachyons.css">
         <link rel="stylesheet" href="/elm-pwa-example/assets/css/app.css">
         <link rel="manifest" href="/elm-pwa-example/manifest.json">
@@ -19,7 +20,7 @@
             
             if('serviceWorker' in navigator) {
                 navigator.serviceWorker
-                        .register('/elm-pwa-example/service_worker.js')
+                        .register('/elm-pwa-example/service_worker.js', {scope: '/elm-pwa-example/'})
                         .then(function() { console.log("Service Worker Registered"); });
             }
 
