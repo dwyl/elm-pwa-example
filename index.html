@@ -19,7 +19,7 @@
             
             if('serviceWorker' in navigator) {
                 navigator.serviceWorker
-                        .register('/elm-pwa-example/service_worker.js', {scope: "/elm-pwa-example"})
+                        .register('/elm-pwa-example/service_worker.js', {scope: "/"})
                         .then(function() { console.log("Service Worker Registered"); });
             }
 
