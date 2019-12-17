@@ -6286,6 +6286,10 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6334,6 +6338,13 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
@@ -6342,25 +6353,71 @@ var $author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
-				$elm$html$Html$text(model.message),
 				A2(
-				$elm$html$Html$textarea,
+				$elm$html$Html$main_,
 				_List_fromArray(
 					[
-						$elm$html$Html$Events$onInput($author$project$Main$Capture),
-						$elm$html$Html$Attributes$value(model.capture)
-					]),
-				_List_Nil),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('db'),
-						$elm$html$Html$Events$onClick($author$project$Main$CreateCapture)
+						$elm$html$Html$Attributes$class('pa2')
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Save capture')
+						$elm$html$Html$text(model.message),
+						A2(
+						$elm$html$Html$h1,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('tc ')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Capture')
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('h-75')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$textarea,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onInput($author$project$Main$Capture),
+										$elm$html$Html$Attributes$value(model.capture),
+										$elm$html$Html$Attributes$class('db mb2 center w-100 w-60-l h-100 resize-none'),
+										$elm$html$Html$Attributes$placeholder('write down everything that is on your mind')
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('tc')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('bg-near-white bn'),
+												$elm$html$Html$Events$onClick($author$project$Main$CreateCapture)
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$img,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('pointer tc center'),
+														$elm$html$Html$Attributes$src('/assets/images/submit.png')
+													]),
+												_List_Nil)
+											]))
+									]))
+							]))
 					]))
 			]),
 		title: 'DWYL App'

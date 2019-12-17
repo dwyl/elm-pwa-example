@@ -4,11 +4,11 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput, onClick)
-import Url
+import Html.Events exposing (onClick, onInput)
 import Http
 import Json.Decode as JD
 import Json.Encode as JE
+import Url
 
 
 
@@ -102,9 +102,24 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "DWYL App"
     , body =
-        [ text model.message
-        , textarea [ onInput Capture, value model.capture ] []
-        , button [ class "db", onClick CreateCapture ] [ text "Save capture" ]
+        [ main_ [ class "pa2" ]
+            [ text model.message
+            , h1 [ class "tc " ] [ text "Capture" ]
+            , div [ class "h-75" ]
+                [ textarea
+                    [ onInput Capture
+                    , value model.capture
+                    , class "db mb2 center w-100 w-60-l h-100 resize-none"
+                    , placeholder "write down everything that is on your mind"
+                    ]
+                    []
+                , div [ class "tc" ]
+                    [ button [ class "bg-near-white bn", onClick CreateCapture ]
+                        [ img [ class "pointer tc center", src "/assets/images/submit.png" ] []
+                        ]
+                    ]
+                ]
+            ]
         ]
     }
 
