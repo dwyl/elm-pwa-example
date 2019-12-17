@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
@@ -36,12 +36,13 @@ type alias Model =
     , url : Url.Url
     , capture : String
     , message : String
+    , online : Bool
     }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url "" "", Cmd.none )
+    ( Model key url "" "" True, Cmd.none )
 
 
 
@@ -54,6 +55,7 @@ type Msg
     | Capture String
     | CreateCapture
     | SaveCaptureResult (Result Http.Error String)
+    | Online Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -84,14 +86,18 @@ update msg model =
         SaveCaptureResult (Err e) ->
             ( { model | message = "The capture couldn't be saved" }, Cmd.none )
 
+        Online status ->
+            ({model | online = status}, Cmd.none)
+
 
 
 -- SUBSCRIPTIONS
 
+port online : (Bool -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.none
+    Sub.batch [online Online]
 
 
 
@@ -104,6 +110,7 @@ view model =
     , body =
         [ main_ [ class "pa2" ]
             [ text model.message
+            , onlineView model.online
             , h1 [ class "tc " ] [ text "Capture" ]
             , div [ class "h-75" ]
                 [ textarea
@@ -123,6 +130,11 @@ view model =
         ]
     }
 
+onlineView : Bool -> Html Msg
+onlineView onlineStatus =
+    div [classList [("dn", onlineStatus)]] [
+        img [src "/assets/images/signal_wifi_off.svg"] []
+    ]
 
 
 -- Capture
