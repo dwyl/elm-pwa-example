@@ -8,16 +8,26 @@
     </head>
 
     <body class="bg-near-white helvetica">
-        <script>
-            var app = Elm.Main.init();
-        </script>
-       
        <script>
+            var app = Elm.Main.init();
+            
             if('serviceWorker' in navigator) {
                 navigator.serviceWorker
                         .register('service_worker.js')
                         .then(function() { console.log("Service Worker Registered"); });
             }
+
+            window.addEventListener('online', function(e) {
+                // sync data with server
+                app.ports.online.send(true);
+            }, false);
+
+
+            window.addEventListener('offline', function(e) {
+                // save data locally
+                app.ports.online.send(false);
+            }, false);
+
         </script>
     </body>
 </html>

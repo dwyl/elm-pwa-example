@@ -5325,22 +5325,30 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Main$Model = F4(
-	function (key, url, capture, message) {
-		return {capture: capture, key: key, message: message, url: url};
+var $author$project$Main$Model = F5(
+	function (key, url, capture, message, online) {
+		return {capture: capture, key: key, message: message, online: online, url: url};
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = F3(
 	function (flags, url, key) {
 		return _Utils_Tuple2(
-			A4($author$project$Main$Model, key, url, '', ''),
+			A5($author$project$Main$Model, key, url, '', '', true),
 			$elm$core$Platform$Cmd$none);
 	});
+var $author$project$Main$Online = function (a) {
+	return {$: 'Online', a: a};
+};
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $author$project$Main$online = _Platform_incomingPort('online', $elm$json$Json$Decode$bool);
 var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$Main$online($author$project$Main$Online)
+			]));
 };
 var $elm$browser$Browser$Navigation$load = _Browser_load;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
@@ -6255,7 +6263,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					model,
 					$author$project$Main$saveCapture(model.capture));
-			default:
+			case 'SaveCaptureResult':
 				if (msg.a.$ === 'Ok') {
 					var response = msg.a.a;
 					return _Utils_Tuple2(
@@ -6271,6 +6279,13 @@ var $author$project$Main$update = F2(
 							{message: 'The capture couldn\'t be saved'}),
 						$elm$core$Platform$Cmd$none);
 				}
+			default:
+				var status = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{online: status}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$Capture = function (a) {
@@ -6338,13 +6353,60 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$html$Html$Attributes$classList = function (classes) {
+	return $elm$html$Html$Attributes$class(
+		A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$first,
+				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
+};
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
+var $author$project$Main$onlineView = function (onlineStatus) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('dn', onlineStatus)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$img,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$src('/assets/images/signal_wifi_off.svg')
+					]),
+				_List_Nil)
+			]));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
@@ -6362,6 +6424,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(model.message),
+						$author$project$Main$onlineView(model.online),
 						A2(
 						$elm$html$Html$h1,
 						_List_fromArray(

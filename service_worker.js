@@ -5,6 +5,7 @@ self.addEventListener('install', function (e) {
         '/elm-pwa-example/manifest.json',
         '/elm-pwa-example/elm.js',
         '/elm-pwa-example/assets/images/dwyl.png',
+        '/elm-pwa-example/assets/images/signal_wifi_off.svg',
         '/elm-pwa-example/assets/css/tachyons.css',
         '/elm-pwa-example/assets/css/app.css',
       ]);
