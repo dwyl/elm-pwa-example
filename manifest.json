@@ -4,12 +4,12 @@
     "decription": "The dwyl application",
     "icons": [
       {
-        "src": "/elm-pwa-example/assets/images/dwyl.png",
+        "src": "/assets/images/dwyl.png",
         "sizes": "192x192",
         "type": "image/png"
       }
     ],
-    "start_url": "/elm-pwa-example/",
+    "start_url": "/",
     "display": "standalone",
     "theme_color": "#000000",
     "background_color": "#ffffff"

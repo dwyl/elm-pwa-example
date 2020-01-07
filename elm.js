@@ -6396,7 +6396,7 @@ var $author$project$Main$onlineView = function (onlineStatus) {
 				$elm$html$Html$img,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$src('/elm-pwa-example/assets/images/signal_wifi_off.svg'),
+						$elm$html$Html$Attributes$src('/assets/images/signal_wifi_off.svg'),
 						$elm$html$Html$Attributes$alt('offline icon')
 					]),
 				_List_Nil)
@@ -6471,7 +6471,7 @@ var $author$project$Main$view = function (model) {
 												_List_fromArray(
 													[
 														$elm$html$Html$Attributes$class('pointer tc center'),
-														$elm$html$Html$Attributes$src('/elm-pwa-example/assets/images/submit.png'),
+														$elm$html$Html$Attributes$src('/assets/images/submit.png'),
 														$elm$html$Html$Attributes$alt('capture')
 													]),
 												_List_Nil)

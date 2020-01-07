@@ -122,7 +122,7 @@ view model =
                     []
                 , div [ class "tc" ]
                     [ button [ class "bg-near-white bn", onClick CreateCapture ]
-                        [ img [ class "pointer tc center", src "/elm-pwa-example/assets/images/submit.png", alt "capture" ] []
+                        [ img [ class "pointer tc center", src "/assets/images/submit.png", alt "capture" ] []
                         ]
                     ]
                 ]
@@ -133,7 +133,7 @@ view model =
 onlineView : Bool -> Html Msg
 onlineView onlineStatus =
     div [classList [("dn", onlineStatus)]] [
-        img [src "/elm-pwa-example/assets/images/signal_wifi_off.svg", alt "offline icon"] []
+        img [src "/assets/images/signal_wifi_off.svg", alt "offline icon"] []
     ]
 
 
