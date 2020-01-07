@@ -5,8 +5,7 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server --ssl",
-    "start-dev": "http-server"
+    "start": "http-server"
   },
   "repository": {
     "type": "git",
