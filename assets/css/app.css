@@ -1,7 +1,4 @@
 /* This file is for your main application css. */
-
-@import "./tachyons.css";
-
 html, body {
     height: 100%;
 }
