@@ -5321,12 +5321,12 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$application = _Browser_application;
 var $author$project$Main$Model = F5(
 	function (key, url, capture, message, online) {
-		return {y: capture, X: key, E: message, H: online, M: url};
+		return {y: capture, X: key, E: message, F: online, M: url};
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = F3(
-	function (flags, url, key) {
+	function (_v0, url, key) {
 		return _Utils_Tuple2(
 			A5($author$project$Main$Model, key, url, '', '', true),
 			$elm$core$Platform$Cmd$none);
@@ -6167,15 +6167,17 @@ var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
 		{O: r.O, az: r.az, U: _List_Nil, aE: 'POST', aP: $elm$core$Maybe$Nothing, ao: $elm$core$Maybe$Nothing, M: r.M});
 };
-var $author$project$Main$saveCapture = function (capture) {
-	return $elm$http$Http$post(
-		{
-			O: $elm$http$Http$jsonBody(
-				$author$project$Main$captureEncode(capture)),
-			az: A2($elm$http$Http$expectJson, $author$project$Main$SaveCaptureResult, $author$project$Main$captureDecoder),
-			M: 'https://dwylapp.herokuapp.com/api/captures/create'
-		});
-};
+var $author$project$Main$pouchDB = _Platform_outgoingPort('pouchDB', $elm$json$Json$Encode$string);
+var $author$project$Main$saveCapture = F2(
+	function (appOnline, capture) {
+		return appOnline ? $elm$http$Http$post(
+			{
+				O: $elm$http$Http$jsonBody(
+					$author$project$Main$captureEncode(capture)),
+				az: A2($elm$http$Http$expectJson, $author$project$Main$SaveCaptureResult, $author$project$Main$captureDecoder),
+				M: 'https://dwylapp.herokuapp.com/api/captures/create'
+			}) : $author$project$Main$pouchDB(capture);
+	});
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
 		if (maybePort.$ === 1) {
@@ -6256,7 +6258,7 @@ var $author$project$Main$update = F2(
 			case 3:
 				return _Utils_Tuple2(
 					model,
-					$author$project$Main$saveCapture(model.y));
+					A2($author$project$Main$saveCapture, model.F, model.y));
 			case 4:
 				if (!msg.a.$) {
 					var response = msg.a.a;
@@ -6278,7 +6280,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{H: status}),
+						{F: status}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -6420,7 +6422,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(model.E),
-						$author$project$Main$onlineView(model.H),
+						$author$project$Main$onlineView(model.F),
 						A2(
 						$elm$html$Html$h1,
 						_List_fromArray(

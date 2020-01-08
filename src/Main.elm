@@ -41,7 +41,7 @@ type alias Model =
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
-init flags url key =
+init _ url key =
     ( Model key url "" "" True, Cmd.none )
 
 
@@ -78,7 +78,7 @@ update msg model =
             ( { model | capture = text }, Cmd.none )
 
         CreateCapture ->
-            ( model, saveCapture model.capture )
+            ( model, saveCapture model.online model.capture )
 
         SaveCaptureResult (Ok response) ->
             ( { model | capture = "", message = "Capture saved" }, Cmd.none )
@@ -94,6 +94,7 @@ update msg model =
 -- SUBSCRIPTIONS
 
 port online : (Bool -> msg) -> Sub msg
+port pouchDB : String -> Cmd msg
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
@@ -129,7 +130,7 @@ view model =
             ]
         ]
     }
-
+ 
 onlineView : Bool -> Html Msg
 onlineView onlineStatus =
     div [classList [("dn", onlineStatus)]] [
@@ -140,14 +141,17 @@ onlineView onlineStatus =
 -- Capture
 
 
-saveCapture : String -> Cmd Msg
-saveCapture capture =
-    Http.post
-        { url = "https://dwylapp.herokuapp.com/api/captures/create"
-        , body = Http.jsonBody (captureEncode capture)
-        , expect = Http.expectJson SaveCaptureResult captureDecoder
-        }
-
+saveCapture : Bool -> String -> Cmd Msg
+saveCapture appOnline capture =
+    if appOnline then
+        Http.post
+            { url = "https://dwylapp.herokuapp.com/api/captures/create"
+            , body = Http.jsonBody (captureEncode capture)
+            , expect = Http.expectJson SaveCaptureResult captureDecoder
+            }
+    else
+    -- if not online save the item in PouchDB via ports
+    pouchDB capture 
 
 captureEncode : String -> JE.Value
 captureEncode capture =
