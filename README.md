@@ -12,8 +12,9 @@ will enhance the application by making it usable offline.
   
 <img src="https://user-images.githubusercontent.com/6057298/71968230-62f58a80-31fc-11ea-86db-8c64f8dd76b3.png" width="100">
 
-The entry point and only file returned by the backend is the index.html  This file defines the basic html structure (head, body) and link to the css and js files.
-The most important file included in the `index.html` is `elm.js` file which contains all the logic of the application
+The entry point and only file returned by the backend is the index.html.
+This file defines the basic html tags (head and body) which contains links to the css and js code.
+The most important file included in the `index.html` is `elm.js` file which defines all the logic of the application.
 
 Learn more about Elm at https://github.com/dwyl/learn-elm
 
@@ -21,15 +22,31 @@ Learn more about Elm at https://github.com/dwyl/learn-elm
 
 <img src="https://user-images.githubusercontent.com/6057298/71970060-d220ae00-31ff-11ea-9faa-3d8beed3c6da.png" width="100">
 
-The files `manifest.json` and `service_worker.js` add to the Elm application the progressive web app features.
-The idea of this repository is to determine how to implement the PWA requirements and to test the application offline:
+To make the application progressive,
+we need to add two files:
+- `manifest.json`: This file contains the application description (eg: name, logo, main colour,...)
+- `service_worker.js`: This file contains the logic for the application to work offline, ie which requests should be cached.
+
+These two files should be enough to have a PWA:
 
 ![image](https://user-images.githubusercontent.com/6057298/71974614-cfc35180-3209-11ea-8cca-27a6dec7d545.png)
 
 ![image](https://user-images.githubusercontent.com/6057298/71974641-e79ad580-3209-11ea-89c6-ad474c891d1c.png)
 
+We still want the ability to save data when the application is offline.
+LocalStorage and cookies are not supported by service workers.
+A solution when we want to save data with a PWA is to use [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+and in our exemple we are more specifically using [PouchDB](https://pouchdb.com/).
+PouchDB is a database built on top of IndexedDB and which is easier to use.
 
- 
+To `install` PouchDB we just need to add the following script to our html:
+```html
+<script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
+```
+
+Then the `pouchdb.js` file contains the logic to save information and retrieve all the data, using the `put` and `allDocs` API.
+The documentation for PouchDB is accessible at the following url: https://pouchdb.com/guides/documents.html
+
 Learn more about Progressive Web App at https://github.com/dwyl/learn-progressive-web-apps
 
 # How
